@@ -2,9 +2,35 @@
 
 [![tag](https://img.shields.io/github/v/tag/jvkec/scilla)](https://github.com/jvkec/scilla/tags)
 
-Skills for Cursor agents. A skill is a folder in `skills/` with a `SKILL.md`. Run one by name.
+A collection of skills for coding agents. Some I took from people who publish how they work. Some I wrote after a session turned into a step worth repeating.
 
-Git tags are the installation record. Pin a tag when you install so a later push does not change an install that already shipped.
+Git tags are what you install. Pin a tag so a later push does not change an install you already have. The badge above is the current tag.
+
+## Install
+
+The same commands work for Cursor, Claude Code, and Codex. Set `--agent` to `cursor`, `claude-code`, or `codex`.
+
+Install every skill in the project you are in:
+
+```bash
+npx skills add jvkec/scilla#v0.1.0 --agent cursor -y
+npx skills add jvkec/scilla#v0.1.0 --agent claude-code -y
+npx skills add jvkec/scilla#v0.1.0 --agent codex -y
+```
+
+Install one skill:
+
+```bash
+npx skills add jvkec/scilla#v0.1.0 --skill walkthrough --agent cursor -y
+```
+
+Install for every project on this machine:
+
+```bash
+npx skills add jvkec/scilla#v0.1.0 -g --agent cursor -y
+```
+
+Replace `v0.1.0` with the tag on the badge. On the one-skill and global commands, swap `cursor` for `claude-code` or `codex`.
 
 ## Skills
 
@@ -19,5 +45,5 @@ Git tags are the installation record. Pin a tag when you install so a later push
 
 ## Sources
 
-- [pstack](https://github.com/cursor/plugins/tree/main/pstack) by Lauren Tan. `/create-verification-skill`, `/maintain-verification-skill`, and `/eval` started there. The verification skills were generalized after that.
-- [Agentic Engineering Patterns](https://simonwillison.net/guides/agentic-engineering-patterns/) by Simon Willison. `/build-from-example`, `/walkthrough`, and `/compound` come from that guide. The verification skills also took two rules from it: save the command with the output it produced, and turn a failed drive into a failing test when the project has a test suite.
+- [pstack](https://github.com/cursor/plugins/tree/main/pstack) by Lauren Tan.
+- [Agentic Engineering Patterns](https://simonwillison.net/guides/agentic-engineering-patterns/) by Simon Willison.
