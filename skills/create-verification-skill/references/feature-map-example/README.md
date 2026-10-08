@@ -23,6 +23,8 @@ This directory is the maintained source for verifying the user-facing behavior o
 ## Proof and skip reporting
 
 - Capture the user action and the resulting state, not only the final screen.
+- Every proof pairs the command that was run with the output it produced. A written claim about the result is not proof.
+- A drive that shows wrong behavior becomes one new test in the project's suite when a suite exists. Run that test and confirm it fails on the captured output before any product change. A test that already passes does not count. With no suite, the failing command and its captured output, kept in the evidence location, are the regression check.
 - UI proof includes an ARIA snapshot and a screenshot with the app identity visible.
 - CLI proof includes the command, stdout, stderr, and exit code.
 - Mutation proof includes a read-only second view of the stored value.
