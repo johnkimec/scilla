@@ -1,6 +1,6 @@
 # scilla
 
-[![tag](https://img.shields.io/github/v/tag/jvkec/scilla)](https://github.com/jvkec/scilla/tags)
+[![tag](https://img.shields.io/github/v/tag/johnkimec/scilla)](https://github.com/johnkimec/scilla/tags)
 
 A collection of skills for coding agents. Some I took from people who publish how they work. Some I wrote after a session turned into a step worth repeating.
 
@@ -13,21 +13,21 @@ The same commands work for Cursor, Claude Code, and Codex. Set `--agent` to `cur
 Install every skill in the project you are in:
 
 ```bash
-npx skills add jvkec/scilla#v0.1.0 --agent cursor -y
-npx skills add jvkec/scilla#v0.1.0 --agent claude-code -y
-npx skills add jvkec/scilla#v0.1.0 --agent codex -y
+npx skills add johnkimec/scilla#v0.1.0 --agent cursor -y
+npx skills add johnkimec/scilla#v0.1.0 --agent claude-code -y
+npx skills add johnkimec/scilla#v0.1.0 --agent codex -y
 ```
 
 Install one skill:
 
 ```bash
-npx skills add jvkec/scilla#v0.1.0 --skill walkthrough --agent cursor -y
+npx skills add johnkimec/scilla#v0.1.0 --skill walkthrough --agent cursor -y
 ```
 
 Install for every project on this machine:
 
 ```bash
-npx skills add jvkec/scilla#v0.1.0 -g --agent cursor -y
+npx skills add johnkimec/scilla#v0.1.0 -g --agent cursor -y
 ```
 
 Replace `v0.1.0` with the tag on the badge. On the one-skill and global commands, swap `cursor` for `claude-code` or `codex`.
