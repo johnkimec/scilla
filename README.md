@@ -13,24 +13,24 @@ The same commands work for Cursor, Claude Code, and Codex. Set `--agent` to `cur
 Install every skill in the project you are in:
 
 ```bash
-npx skills add johnkimec/scilla#v0.1.0 --agent cursor -y
-npx skills add johnkimec/scilla#v0.1.0 --agent claude-code -y
-npx skills add johnkimec/scilla#v0.1.0 --agent codex -y
+npx skills add johnkimec/scilla#v0.2.0 --agent cursor -y
+npx skills add johnkimec/scilla#v0.2.0 --agent claude-code -y
+npx skills add johnkimec/scilla#v0.2.0 --agent codex -y
 ```
 
 Install one skill:
 
 ```bash
-npx skills add johnkimec/scilla#v0.1.0 --skill walkthrough --agent cursor -y
+npx skills add johnkimec/scilla#v0.2.0 --skill walkthrough --agent cursor -y
 ```
 
 Install for every project on this machine:
 
 ```bash
-npx skills add johnkimec/scilla#v0.1.0 -g --agent cursor -y
+npx skills add johnkimec/scilla#v0.2.0 -g --agent cursor -y
 ```
 
-Replace `v0.1.0` with the tag on the badge. On the one-skill and global commands, swap `cursor` for `claude-code` or `codex`.
+Replace `v0.2.0` with the tag on the badge. On the one-skill and global commands, swap `cursor` for `claude-code` or `codex`.
 
 ## Skills
 
@@ -42,6 +42,7 @@ Replace `v0.1.0` with the tag on the badge. On the one-skill and global commands
 | `/walkthrough` | Explain a codebase in order, with every snippet printed by a command and saved through Showboat. |
 | `/compound` | After a task, write one lasting project lesson into `AGENTS.md` for the next agent. |
 | `/eval` | Run a blinded check of whether a skill or prompt change actually changes what agents do. |
+| `/project-doc` | Scope a project in a written doc, and make the architectural decisions, before any code. |
 
 ## Sources
 

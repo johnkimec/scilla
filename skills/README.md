@@ -10,3 +10,4 @@ Each skill is a folder with a `SKILL.md`. Run one by name. The steps live in tha
 | `/walkthrough` | Explain a codebase in order, with every snippet printed by a command and saved through Showboat. |
 | `/compound` | After a task, write one lasting project lesson into `AGENTS.md` for the next agent. |
 | `/eval` | Run a blinded check of whether a skill or prompt change actually changes what agents do. |
+| `/project-doc` | Scope a project in a written doc, and make the architectural decisions, before any code. |
