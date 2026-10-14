@@ -42,7 +42,9 @@ Replace `v0.2.0` with the tag on the badge. On the one-skill and global commands
 | `/walkthrough` | Explain a codebase in order, with every snippet printed by a command and saved through Showboat. |
 | `/compound` | After a task, write one lasting project lesson into `AGENTS.md` for the next agent. |
 | `/eval` | Run a blinded check of whether a skill or prompt change actually changes what agents do. |
+| `/deepen` | Rewrite a task into a deeper version, not a bigger one, before work starts. |
 | `/project-doc` | Scope a project in a written doc, and make the architectural decisions, before any code. |
+| `/scilla-mode` | Route a bug, a live or captured diagnosis, or a behavior-preserving refactor through one playbook. |
 
 ## Sources
 

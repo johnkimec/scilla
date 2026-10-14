@@ -41,7 +41,9 @@ Use them in this order on a new project.
 5. `/compound` at the end of a task, when the task taught you a fact the next task will need.
 6. `/create-verification-skill` once the system actually runs and you want a scripted way to prove it.
 7. `/maintain-verification-skill` later, when the system has changed and the verification notes may be stale.
-8. `/eval` only when you are changing a skill or a prompt and you want to know whether agents behave differently. Skip it while you are building the product.
+8. `/deepen` when you have a task prompt and want a deeper version of it, not a bigger one, before the agent starts the work.
+9. `/scilla-mode` when something is broken, you have a trace or a live symptom, or you want to change structure without changing behavior.
+10. `/eval` only when you are changing a skill or a prompt and you want to know whether agents behave differently. Skip it while you are building the product.
 
 `/project-doc` can also start on its own when you say you are starting a project or a design. The other commands start when you type them.
 
@@ -140,6 +142,39 @@ Checks the feature map against the current system and drives every mapped behavi
 **You do:** Let it launch and drive the system. If it reports `blocked`, the message names the missing piece (auth, a probe, a cable, a board). Fix that, then run it again.
 
 **You get:** An updated feature map, or a clear statement that it was already right, plus any failing test it added for a real product break.
+
+## `/deepen`
+
+Rewrites a task into a deeper version of the same job, not a bigger one.
+
+**Use it when** you already have a prompt or task and want the professional cut before the agent starts. Skip it when you only want more features or a longer todo list.
+
+**You type:** `/deepen` and the task. Example: `/deepen Write a summary of this paper.`
+
+**The agent does:** Answers four things first: what a top professional would do that you are not asking for; the rawest material they would start from; the specific methods and tools; and what, other than you or the agent, would show the result is right. Then it rewrites your prompt to ask for exactly that. It does not run the rewritten prompt unless you say to.
+
+**You do:** Read the four answers and the rewritten prompt. Paste or run the rewrite if you want that work done.
+
+**You get:** Four short answers, then one rewritten prompt. You do not get the task done in that same pass unless you ask.
+
+## `/scilla-mode`
+
+Routes a bug, a diagnosis, or a behavior-preserving refactor through one playbook. You do not name the playbook. You name the problem.
+
+**You type:** `/scilla-mode` and the goal. Example: `/scilla-mode the last row of the csv export is missing. repro first, then fix.`
+
+**The agent does:** Matches one playbook and copies its steps into the todo list.
+
+- A bug to fix → Bug fix. It reproduces the bug, finds the cause with a run, makes the smallest fix, and verifies on the same surface.
+- A live leak, spin, or glitch, and you want the cause → Runtime forensics. It captures an artifact from the running process and stops at the diagnosis.
+- A profile, trace, heap snapshot, or spindump you already have → Trace forensics. It reads that file and does not re-run the capture.
+- A rename, extract, or move that must keep behavior → Refactoring. It pins the current behavior, then changes structure, then runs the same check.
+
+A step it skips stays in the list with `skip:` and a reason. Forensics does not edit the product. Ask it to fix the cause and it switches to Bug fix.
+
+**You do:** Say what is wrong, or what must stay the same. Add a constraint when you have one, such as "repro first" or "don't change any code yet." "new task" starts a fresh match.
+
+**You get:** The reply that playbook names. For a fix, that is the cause, the change, and the failing run next to the passing run. For a diagnosis, that is the artifact, the finding, and the file and line. For a refactor, that is what moved and the before and after of the same check.
 
 ## `/eval`
 
