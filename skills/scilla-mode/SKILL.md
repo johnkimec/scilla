@@ -30,6 +30,7 @@ These are other skills. Name the skill and stop:
 - Deepen a prompt before work → `/deepen`
 - Whether a skill or prompt change alters what agents do → `/eval`
 - One lasting lesson after a finished task → `/compound`
+- A topic to learn until you can do it → `/socratic-tutor`
 
 ## Run
 
