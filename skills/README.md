@@ -2,6 +2,8 @@
 
 Each skill is a folder with a `SKILL.md`. Run one by name. The steps live in that file.
 
+Read [AUTHORING.md](AUTHORING.md) before you add or change a skill. [AUDIT.md](AUDIT.md) is the review of the skills in this folder.
+
 | Command | When to use it |
 |---|---|
 | `/create-verification-skill` | Generate a project skill that launches a software app, firmware image, FPGA design, simulator, or lab bench, drives it the way a user would, and seeds a feature map. |
