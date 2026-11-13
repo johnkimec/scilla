@@ -44,8 +44,9 @@ Use them in this order on a new project.
 8. `/deepen` when you have a task prompt and want a deeper version of it, not a bigger one, before the agent starts the work.
 9. `/scilla-mode` when something is broken, you have a trace or a live symptom, or you want to change structure without changing behavior.
 10. `/eval` only when you are changing a skill or a prompt and you want to know whether agents behave differently. Skip it while you are building the product.
+11. `/socratic-tutor` when you want to be taught a topic until you can do it. Skip it while you are building the product.
 
-`/project-doc` can also start on its own when you say you are starting a project or a design. The other commands start when you type them.
+`/project-doc` can also start on its own when you say you are starting a project or a design. `/socratic-tutor` can also start when you say "teach me", "tutor me", "quiz me", "drill me", or "help me master". The other commands start when you type them.
 
 ## `/project-doc`
 
@@ -189,3 +190,17 @@ Runs a blinded check of whether a change to a skill, a file layout, or a prompt 
 **You do:** Say what behavior would count as success, in concrete terms. Read the final report before you keep the change. If the judge and the lead agent disagree, the report should say whether the rubric was fuzzy or the judge was biased.
 
 **You get:** A report with the rubric, notes on each candidate, the judge's verdict, and a recommendation to keep the change or not. You do not get a product feature.
+
+## `/socratic-tutor`
+
+Teaches a topic until you can do it, by asking questions instead of lecturing.
+
+**Use it when** you want to be taught, quizzed, or drilled on a topic until you can do it on your own. Skip it for a one-off "explain X", "what is X", or "how do I use X". Those get a normal answer.
+
+**You type:** `/socratic-tutor` and the topic. Example: `/socratic-tutor Teach me SQL joins.` You can also say "teach me", "tutor me", "quiz me", "drill me", or "help me master". If it is unclear whether you want a lesson or a quick answer, the agent asks once: "Want a quick answer, or should I actually teach you this properly?"
+
+**The agent does:** Splits the topic into 4-10 concrete subskills (fewer when the topic is narrow; a broad topic becomes a two-level tree and it starts on the first branch). It asks 3-5 diagnostic questions, one at a time, from easy to hard, and does not teach until that placement is done. Then it shows a skill map and proposes where to start. You can override. Each subskill is a level from 0 (unaware) to 5 (you could teach it, including an edge case). It works one question at a time and stops the message there. A wrong answer gets a narrower question, not the answer. It explains only after 2-3 failed tries, then asks the same idea again from another angle. A right answer sometimes gets a challenge. A short explanation is only for material you could not derive. When tools fit the topic, it sets an exercise and checks what you actually produced. It raises a level only after you show the idea on 2 or more separate checks, including once from memory. It re-tests earlier subskills without warning, and drops a level if you miss. It stops when every subskill is at the target (4 by default, 5 if you asked for full mastery), then gives a mixed final check: at least one question per subskill, plus one problem that ties them together.
+
+**You do:** Answer one question at a time, in your own words. Say "show progress" for the map, "harder" or "easier" to change difficulty, or "just tell me" to get the answer to the current question only. Say "save state" for a block you can paste into a later chat, or "resume from:" plus that block to continue. A new chat does not remember the old one. The saved block does.
+
+**You get:** A running skill map. At the end, the final map and a summary of your weakest areas. A failed final check sends you back into the questions.

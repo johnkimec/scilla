@@ -45,8 +45,10 @@ Replace `v0.2.0` with the tag on the badge. On the one-skill and global commands
 | `/deepen` | Rewrite a task into a deeper version, not a bigger one, before work starts. |
 | `/project-doc` | Scope a project in a written doc, and make the architectural decisions, before any code. |
 | `/scilla-mode` | Route a bug, a live or captured diagnosis, or a behavior-preserving refactor through one playbook. |
+| `/socratic-tutor` | Teach a topic to mastery with a diagnostic, one question at a time, a skill map, and a final assessment. |
 
 ## Sources
 
 - [pstack](https://github.com/cursor/plugins/tree/main/pstack) by Lauren Tan.
 - [Agentic Engineering Patterns](https://simonwillison.net/guides/agentic-engineering-patterns/) by Simon Willison.
+- [socratic-tutor](https://github.com/janestreet/agent_skills/tree/master/socratic-tutor) by Jane Street.

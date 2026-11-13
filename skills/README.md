@@ -13,3 +13,4 @@ Each skill is a folder with a `SKILL.md`. Run one by name. The steps live in tha
 | `/deepen` | Rewrite a task into a deeper version, not a bigger one, before work starts. |
 | `/project-doc` | Scope a project in a written doc, and make the architectural decisions, before any code. |
 | `/scilla-mode` | Route a bug, a live or captured diagnosis, or a behavior-preserving refactor through one playbook. |
+| `/socratic-tutor` | Teach a topic to mastery with a diagnostic, one question at a time, a skill map, and a final assessment. |
