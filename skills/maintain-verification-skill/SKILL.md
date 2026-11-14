@@ -1,6 +1,6 @@
 ---
 name: maintain-verification-skill
-description: "Periodic pass that keeps a project's verification skill and feature map honest for a software app, firmware, FPGA, simulator, or lab bench: parallel source readers per feature, one live session driving every feature, at most one PR of proven corrections. A product gap leaves as its own failing test, on a separate PR. Use for /maintain-verification-skill or \"audit the verify skill\"."
+description: "Audit a project's verification skill and feature map for a software app, firmware, FPGA, simulator, or lab bench. Use for /maintain-verification-skill or \"audit the verify skill\". Do not use when the project has no verification skill; that is /create-verification-skill. Fixing product behavior stays a separate change."
 disable-model-invocation: true
 ---
 
@@ -24,13 +24,37 @@ Only edit the verification skill's own directory (its SKILL.md, features/, and a
 
 0. **Locate the target.** Find the verification skill to maintain: the project-local skill whose body has launch/drive sections and a feature map (usually `.cursor/skills/verify-*/`). Several candidates → ask which one; none → stop and point at `/create-verification-skill` instead of inventing a target.
 
-1. **Index hygiene.** Read the feature map README and glob its sibling files. Fix missing, extra, duplicate, or dead entries. Lightweight; no generated inventory.
+1. **Index hygiene.** Read the feature map README and glob its sibling files. Fix missing, extra, duplicate, or dead entries. Lightweight; no generated inventory. Then run the shape check from this skill's directory. It checks frontmatter and the four headings. It does not drive the system.
+
+   ```bash
+   python3 scripts/check-feature-map.py --help
+   python3 scripts/check-feature-map.py --skill <path-to-verify-target>
+   ```
+
+   Exit 0 means the shape holds. Exit 1 lists each miss on stderr. Fix heading and frontmatter misses under edit scope, then run the check again before the live pass, and again before a changed PR. Exit 2 means the invocation was wrong. The script reads only. `--help` lists the exit codes and why there is no `--dry-run`. The same script ships inside `/create-verification-skill`. Use this copy.
 
 2. **Source wave.** One read-only subagent per feature file, launched concurrently. Each explains "how does this user-facing feature work?" from source, flags likely doc drift with citations, and returns one concise live-verification recipe. Children never drive the system and never edit files. Return shape: feature summary / source entry points / likely drift or none / one recipe.
 
 3. **Reconcile.** Every feature file has a returned summary. Merge overlapping recipes into as few system states as practical. Spot-check cited drift; don't re-prove clean claims. Sweep recent churn for user-facing surfaces missing from the map — require a concrete source path before calling one missing.
 
-4. **Live pass.** Required even when source looks clean. The coordinator owns all driving; follow the verification skill's own launch model. One long-lived instance driven serially for a server, a UI, a programmed board, or an attached instrument. A fresh isolated session per drive for a short-lived CLI or a simulator run that exits. The skill's Launch section decides, not this one. A physical board, probe, or instrument is one instance: never put a second agent on it. Exercise every feature at least once, and hold three invariants the whole pass, whatever the failure: (1) never drive an instance you haven't health-checked since it last did something surprising — doctor before first drive, doctor on each fresh session where sessions are the unit, doctor again after any failed drive, and where doctor can't see the failure (a wedged UI, a hung UART, a board that no longer answers), reset, reflash, or reprogram rather than hoping, and only when Launch says that is safe; (2) evidence captured so far survives every cleanup, and reading it shows the command and the output that command produced, at its named location; (3) nothing a drive started outlives that drive's usefulness — failed-iteration residue is cleaned whether the session is stuck, exited, or shared (for a shared instance, clean the residue, not the instance; do not power off a shared bench). A doctor failure caused by skill drift is drift: fix it under edit scope and retry once — restart whatever the fix invalidated, nothing more — before calling the pass `blocked`. A feature that can't be reached is `verified-unreachable` only with the concrete prerequisite (auth, entitlement, OS, probe, cable, supply, firmware or bitstream id, external state) and the route attempted; if the map omits that prerequisite, that's drift. Any harness fix from triage gets re-driven live before it ships. Final teardown happens after the last drive of the run — including those re-proofs — so nothing outlives the run (evidence stays, per the skill).
+4. **Live pass.** Required even when source looks clean. The coordinator owns all driving. Follow the verification skill's own Launch section. This skill does not pick a different launch model. Hold every item below for the whole pass, including after a failure. The drive itself stays prose. The shape check does not launch or drive anything.
+
+   - [ ] One long-lived instance, driven serially, for a server, a UI, a programmed board, or an attached instrument.
+   - [ ] A fresh isolated session per drive for a short-lived CLI or a simulator run that exits.
+   - [ ] A physical board, probe, or instrument is one instance. Never put a second agent on it.
+   - [ ] Exercise every feature at least once.
+   - [ ] Never drive an instance you have not health-checked since it last did something surprising.
+   - [ ] Doctor before the first drive.
+   - [ ] Doctor on each fresh session where sessions are the unit.
+   - [ ] Doctor again after any failed drive.
+   - [ ] Where doctor cannot see the failure (a wedged UI, a hung UART, a board that no longer answers), reset, reflash, or reprogram only when Launch says that is safe. Hoping is not a check.
+   - [ ] Evidence captured so far survives every cleanup. Reading it shows the command and the output that command produced, at its named location.
+   - [ ] Nothing a drive started outlives that drive's usefulness. Clean failed-iteration residue whether the session is stuck, exited, or shared.
+   - [ ] On a shared instance, clean the residue, not the instance. Do not power off a shared bench.
+   - [ ] A doctor failure caused by skill drift is drift. Fix it under edit scope and retry once. Restart whatever the fix invalidated, and nothing more, before calling the pass `blocked`.
+   - [ ] A feature that cannot be reached is `verified-unreachable` only with the concrete prerequisite (auth, entitlement, OS, probe, cable, supply, firmware or bitstream id, external state) and the route attempted. If the map omits that prerequisite, that is drift.
+   - [ ] Any harness fix from triage is re-driven live before it ships.
+   - [ ] Final teardown happens after the last drive of the run, including those re-proofs, so nothing outlives the run. Evidence stays, per the skill.
 
 5. **Triage.** Wrong or missing user-POV description → doc drift, fix it. Evidence text that accepts a written claim as proof, or that has no rule for a failed drive, is drift too: a repo with a suite turns that drive into one failing test; a repo without one keeps the command and its captured output. Fix that text. Working behavior the harness can't drive → harness gap, fix it; a harness fix follows the same helpers rule as generation (scripts executable, invocation documented in the skill body). System behavior that's actually broken → product gap. Keep the map describing the intended behavior. The record is the drive command and the output it captured. When the repo has an automated suite, add one test in that suite that fails on that output, run it, and confirm the failure matches the drive. A test that already passes does not count. Those tests ship together on one PR, with no product change beside them and not in the verification PR. A repo with no suite reports the gap by pointing at that evidence artifact.
 

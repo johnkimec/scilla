@@ -1,6 +1,6 @@
 ---
 name: scilla-mode
-description: "Route a bug, a live diagnosis, a captured trace, or a behavior-preserving refactor through one playbook. Use for /scilla-mode, \"scilla mode\", a defect to reproduce and fix, a runtime or trace diagnosis, or a refactor that keeps behavior the same."
+description: "Route a bug, a live diagnosis, a captured trace, or a behavior-preserving refactor through one playbook. Use for /scilla-mode or \"scilla mode\". An ordinary bug fix, a code question, a new feature, or a refactor that was not asked for through this command stays a normal answer."
 disable-model-invocation: true
 ---
 

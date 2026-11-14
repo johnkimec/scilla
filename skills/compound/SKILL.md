@@ -1,6 +1,6 @@
 ---
 name: compound
-description: "After a task, write one standing project lesson into AGENTS.md so the next agent starts with it. Use for /compound or when a finished task revealed a command, path, or constraint the next task will need. Skip notes that only describe where this task stopped."
+description: "After a task, write one standing project lesson into AGENTS.md so the next agent starts with it. Use for /compound or when a finished task revealed a command, path, or constraint the next task will need. A note that only says where this task stopped stays out of AGENTS.md. This skill does not start for a status recap."
 disable-model-invocation: true
 ---
 

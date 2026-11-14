@@ -1,41 +1,42 @@
 # Skill audit
 
-Reviewed 2026-11-13 against `main` at `e1c14ab` (the merge that added `socratic-tutor`). The bar is [AUTHORING.md](AUTHORING.md). This file records the review. It does not change the skills. Line counts are `SKILL.md` including frontmatter. Every description is under the 1024-character limit, third person, and paired with a `name` that matches its folder.
+Reviewed 2026-11-13 against `main` at `e1c14ab` (the merge that added `socratic-tutor`). Updated 2026-11-14, after the four items in Done were implemented. The bar is [AUTHORING.md](AUTHORING.md). The counts table is current and includes frontmatter. Paragraphs under Per skill keep the original reading. A Done line says what changed. Every description is under the 1024-character limit, third person, and paired with a `name` that matches its folder.
 
-## Do these first
+## Done
 
-1. **Write every description as if it can fire on its own.** Eight skills set `disable-model-invocation: true`. That field is Cursor's. Claude Code and Codex ignore it, and the install commands in `README.md` target all three. The descriptions were written to be pushy, then gated by a flag that does not travel. On those hosts, `scilla-mode` matches an ordinary bug or refactor, and `walkthrough` matches a one-off "how does this work." `HOW-TO-USE.md` says those commands start when someone types them. Narrow the descriptions to the command and the real near misses, or accept that they auto-start outside Cursor. `socratic-tutor` is the pattern already in the repo: the slash phrases, plus one sentence that keeps a one-off question as a normal answer.
-2. **Give `/eval` a blinding scan.** The banned-word list (eval, test, judge, rubric, and the rest) is a quiet check the agent does from memory, inside trees it is also forbidden to leak into. A `scripts/` scanner that exits non-zero and prints the path on stderr is the deterministic step. Keep the judgment (what counts as success, what the judge should weigh) as instructions.
-3. **Check the feature-map shape with a script.** `create-verification-skill` says a generated skill with no frontmatter never registers, and that each feature file has four H2s in a fixed order. `maintain-verification-skill` re-checks that map. Both are exact, and both are easy to "almost" follow. One small checker, copied into each skill so a single-skill install still has it, should validate frontmatter and those headings. The live drive stays prose. The harness is different for a board, a simulator, and a web app.
-4. **Turn two long paragraphs into checklists, in the same file.** `create-verification-skill` puts the evidence rules in one 1,426-character bullet. `maintain-verification-skill` puts the live pass in one 2,016-character paragraph. The rules are the right rules. An agent skims a paragraph that long and drops a clause. A checklist on the main path is the fix. Leave the text in `SKILL.md`. Splitting a 40-line skill into reference files adds a read and saves nothing.
+Implemented 2026-11-14. `disable-model-invocation: true` is still set on the eight slash commands, for Cursor.
+
+1. **Descriptions stand alone.** Each of those eight descriptions keeps the slash phrasing and adds a near-miss boundary, on the pattern of `socratic-tutor`. `scilla-mode` does not start on an ordinary bug, code question, new feature, or refactor. `walkthrough` does not start on a one-off "how does this work." Create and maintain name each other. `/eval` does not start for a product suite, CI, or grading application code. The maintain description opens on the trigger. The old "A product gap leaves as..." clause is gone. Procedure stays in the body.
+2. **`/eval` runs `scripts/scan-blind.py`.** The word list lives in the script. Stdout is JSON. Stderr names the path. Exit 0 is clean, 1 is a hit, 2 is a bad invocation. Judgment (the rubric, the prompt's tone, the judge) stays prose.
+3. **Shape check, copied into both skills.** `scripts/check-feature-map.py` is the same file in `create-verification-skill` and `maintain-verification-skill`. It checks `name`, `description`, and the four feature H2s in order. `features/README.md` is the index and is not a feature file. The live drive stays prose.
+4. **Checklists, same files.** The evidence standards in `create-verification-skill` and the live pass in `maintain-verification-skill` are checklists. The rules are the same rules. They were not split into `references/`.
 
 ## Do later
 
-- Front-load `maintain-verification-skill`'s description. The trigger ("audit the verify skill") is at the end, after the procedure. "A product gap leaves as its own failing test" is missing the thing that leaves. Move the procedure into the body.
-- Add the create/maintain boundary to both descriptions. "No verifier yet" and "the verifier is stale" share the words "prove" and "verify."
 - `project-doc`: say to read `template.md` only when creating a doc. Add why decision IDs never change (later steps and `superseded by` links point at them). A README or a code tour is `/walkthrough`.
-- `walkthrough`: set `compatibility: Requires uv`. The dependency is in `HOW-TO-USE.md` and absent from the skill.
+- `walkthrough`: set `compatibility: Requires uv`. The dependency is in `HOW-TO-USE.md` and absent from the skill. The description boundary is done.
 - `create-verification-skill`: link `references/feature-map-example/create-note.md` from `SKILL.md`. Today the filled example is a second hop through the example README.
 - On the cleanup rule "Never kill by process name," add the failure in the same sentence: a shared name matches processes this run did not start. That line is copied into generated skills, so the reason travels.
+- `maintain-verification-skill`: an index diff (README entries against files on disk) is still prose. The triage paragraph is still one block. The shape check does not cover either.
 
 ## Leave as they are
 
-`compound`, `deepen`, and `build-from-example` are short, third person, and put each constraint on the step that needs it. `socratic-tutor` already carries the near-miss boundary in the description, which matters because it is allowed to start without a slash. `scilla-mode`'s playbooks are the right use of on-demand files. None of the ten skills is over 500 lines, and none is missing a file it should have had for length.
+`compound`, `deepen`, and `build-from-example` stay short. Their 2026-11-14 edit is the description boundary only. The steps were not rewritten. `socratic-tutor` was already the description to copy and was not changed. `scilla-mode`'s playbooks were not changed. None of the ten skills is over 500 lines.
 
 ## Counts
 
 | Skill | Lines | Auto-starts in Cursor | Description | Extra files |
 |---|---:|---|---:|---|
-| `build-from-example` | 21 | No | 284 | — |
-| `compound` | 19 | No | 258 | — |
-| `create-verification-skill` | 44 | No | 307 | `references/feature-map-example/` |
-| `deepen` | 19 | No | 254 | — |
-| `eval` | 43 | No | 189 | `LICENSE` |
-| `maintain-verification-skill` | 39 | No | 386 | — |
+| `build-from-example` | 21 | No | 335 | — |
+| `compound` | 19 | No | 319 | — |
+| `create-verification-skill` | 64 | No | 439 | `references/feature-map-example/`, `scripts/check-feature-map.py` |
+| `deepen` | 19 | No | 325 | — |
+| `eval` | 51 | No | 289 | `LICENSE`, `scripts/scan-blind.py` |
+| `maintain-verification-skill` | 63 | No | 321 | `scripts/check-feature-map.py` |
 | `project-doc` | 115 | Yes | 330 | `template.md` |
-| `scilla-mode` | 42 | No | 248 | 4 playbooks, 12–14 lines each |
+| `scilla-mode` | 42 | No | 279 | 4 playbooks, 12–14 lines each |
 | `socratic-tutor` | 72 | Yes | 300 | `LICENSE` |
-| `walkthrough` | 23 | No | 265 | — |
+| `walkthrough` | 23 | No | 208 | — |
 
 "Auto-starts" means `disable-model-invocation` is absent. On Claude Code and Codex, treat every row as able to auto-start.
 
@@ -49,7 +50,7 @@ The description names the job, the command, and "build this like that example." 
 
 Freedom matches the work. Locating and following the example is judgment. Keeping the clone out of the repo is tight, and the sentence says why a clone inside the repo is a miss. The GitHub-blob gotcha sits on step 2, which is the moment it matters: a blob page is HTML, and a summary of the page is not the example.
 
-**Next:** one description clause for "no example in hand." Nothing else.
+**Done:** the description says a design with no example is `/project-doc`, and an ordinary implementation with no example stays a normal answer. `/tmp` is out of the description and still in step 3. Nothing else.
 
 ### `compound`
 
@@ -59,7 +60,7 @@ The description is specific, and "Skip notes that only describe where this task 
 
 "Do not create a skill, and do not add any other file" is absolute and slightly bare. The reason is in the line above it (one sentence, in `AGENTS.md`). A future edit can attach that reason to the prohibition. Low priority.
 
-**Next:** none for behavior. Optional wording on that one prohibition.
+**Done:** the description says a status recap does not start the skill. Optional wording on "do not create a skill" is still open.
 
 ### `create-verification-skill`
 
@@ -75,7 +76,7 @@ The hard rules are mostly in the right form. "Do not invent a board" follows the
 
 Freedom is high on discovering the system and low on the file shape. That mix is right. The evidence bullet is low-freedom content packed as a paragraph, which reads as looser than it is.
 
-**Next:** the shape-check script, the checklist in place of the evidence paragraph, the maintain boundary in the description, the direct link to `create-note.md`.
+**Done:** `scripts/check-feature-map.py`, the evidence checklist, and the maintain boundary in the description. Still open: link `create-note.md` from `SKILL.md`.
 
 ### `deepen`
 
@@ -85,7 +86,7 @@ The description already says "a deeper version, not a bigger one," which is the 
 
 Step 2 states the same boundary with a reason: depth is a harder cut on the same job, and a longer scope is a miss. No script. No extra file.
 
-**Next:** that one description sentence, if you decide the skill should stay quiet unless invoked.
+**Done:** the description says not to start when the user wants the task done, or a larger scope.
 
 ### `eval`
 
@@ -99,7 +100,7 @@ The deterministic gap is the blinding scan in "Do these first." The rest of the 
 
 Freedom is calibrated. Blinding is low. Framing the variant is higher. The spawn steps are specific because the order is the experiment (judge only after every candidate has finished).
 
-**Next:** the scanner. Then the product-test boundary in the description.
+**Done:** `scripts/scan-blind.py` is the word check, and the description excludes a product suite, CI, and grading application code.
 
 ### `maintain-verification-skill`
 
@@ -113,7 +114,7 @@ Index hygiene (README entries against files on disk) is a diff a script can prin
 
 The outcome enum (`clean`, `changed`, `blocked`) is good low freedom. The coordinator owning the drive is good low freedom. Both are buried in the long paragraphs.
 
-**Next:** checklist in place, description front-load, shared shape of the map check. Then the index diff script.
+**Done:** the live pass is a checklist, the description opens on the trigger and names `/create-verification-skill`, and this skill has its own copy of `scripts/check-feature-map.py`. Still open: the index diff, and the triage paragraph, which is still one block.
 
 ### `project-doc`
 
@@ -139,7 +140,7 @@ Inside a matched playbook the freedom is right. Bug fix is low freedom on "a lin
 
 A script that picks the playbook would be a worse matcher than the table. Leave the match as instructions.
 
-**Next:** the description boundary. The playbooks can stay.
+**Done:** the description keeps `/scilla-mode` and "scilla mode", and an ordinary bug, code question, new feature, or refactor stays a normal answer. The playbooks were not changed.
 
 ### `socratic-tutor`
 
@@ -163,4 +164,4 @@ The description's second sentence is implementation: Showboat, `sed`, `grep`, `c
 
 The memory-snippet rule is already in the right form. A snippet typed from memory is a miss, because the document has to show the bytes on disk. Asking before replacing an existing `walkthrough.md` is the other trap, and it is on the step.
 
-**Next:** narrow the description, add `compatibility`, and add the missing-`uv` stop. Leave the steps alone.
+**Done:** the description drops the Showboat sentence, and a one-off "how does this work" stays a normal answer. Still open: `compatibility: Requires uv`, and a stop when `uvx` is missing. The steps were not changed.
