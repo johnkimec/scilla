@@ -47,6 +47,8 @@ Replace `v0.2.0` with the tag on the badge. On the one-skill and global commands
 | `/scilla-mode` | Route a bug, a live or captured diagnosis, or a behavior-preserving refactor through one playbook. |
 | `/socratic-tutor` | Teach a topic to mastery with a diagnostic, one question at a time, a skill map, and a final assessment. |
 
+The rules for writing a skill are in [skills/AUTHORING.md](skills/AUTHORING.md). A review of the current set is in [skills/AUDIT.md](skills/AUDIT.md).
+
 ## Sources
 
 - [pstack](https://github.com/cursor/plugins/tree/main/pstack) by Lauren Tan.
