@@ -1,6 +1,6 @@
 ---
 name: walkthrough
-description: "Explain a codebase in one linear document whose code snippets were printed by a command. Use Showboat note for commentary and Showboat exec with sed, grep, or cat for snippets. Use for /walkthrough, \"walk me through this code\", or \"how does this actually work\"."
+description: "Explain a codebase in one linear document whose code snippets were printed by a command. Use for /walkthrough or \"walk me through this code\". A one-off \"how does this work\" question stays a normal answer."
 disable-model-invocation: true
 ---
 

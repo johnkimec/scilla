@@ -1,6 +1,6 @@
 ---
 name: build-from-example
-description: "Build a change by following working source instead of inventing a fresh implementation. Read the real files, keep any borrowed repo in /tmp, and leave that copy out of the commit. Use for /build-from-example, \"build this like that example\", or when a working example already exists."
+description: "Build a change by following working source instead of inventing a fresh implementation. Use for /build-from-example, \"build this like that example\", or when a working example already exists. Do not use when no working example exists. A new design is /project-doc, and an ordinary implementation with no example stays a normal answer."
 disable-model-invocation: true
 ---
 

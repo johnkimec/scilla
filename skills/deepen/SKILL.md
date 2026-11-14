@@ -1,6 +1,6 @@
 ---
 name: deepen
-description: "Rewrite a task into a deeper version, not a bigger one: name the professional move, the raw starting material, the methods and tools, and the external check for correctness. Use for /deepen or when the user wants their prompt deepened before work starts."
+description: "Rewrite a task into a deeper version, not a bigger one: the professional move, the raw starting material, the methods and tools, and an external check. Use for /deepen or when the user wants their prompt deepened before work starts. Do not use when the user wants the task done, or a larger scope. That stays a normal answer."
 disable-model-invocation: true
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: create-verification-skill
-description: "Generate a project-local verification skill that drives a system the way a user does: a software app, firmware on a board, an FPGA or RTL design, a simulator, or a lab bench. Use for /create-verification-skill, \"make a control skill for this repo\", or when a project has no scripted way to prove behavior."
+description: "Generate a project-local verification skill that drives a software app, firmware on a board, an FPGA or RTL design, a simulator, or a lab bench the way a user does. Use for /create-verification-skill, \"make a control skill for this repo\", or when a project has no scripted way to prove behavior. Do not use when a verify-* skill already exists; that is /maintain-verification-skill. A one-off check or a product test stays a normal task."
 disable-model-invocation: true
 ---
 
@@ -27,13 +27,33 @@ Write `.cursor/skills/verify-<target>/SKILL.md` with YAML frontmatter (`name: ve
 - **Launch:** the exact command that starts the system for verification, and how to tell it's ready (a log line, a port answering, a prompt, a UART banner, a DONE pin, a simulator prompt). Include teardown. For a short-lived CLI, TUI, or simulator run there is no server to keep alive: launch means build once, then start each drive in its own isolated session. For firmware or an FPGA, launch means build, flash or program, and wait for the ready signal. Name the safe state teardown leaves the board in.
 - **Doctor:** one read-only check that answers "is this instance worth driving?" Software: process up, right version/build, port owned by us, auth valid. Hardware: probe claimed by this run, expected firmware hash or bitstream id, UART or debug link alive, and rail present when the harness can read it. An agent runs this first whenever anything looks off.
 - **Drive:** the harness recipe with real selectors and commands from this repo, not examples. Prefer stable handles (ARIA labels, data attributes, prompt strings, route paths, register names, command strings, pin names, testbench entry points) over coordinates, tab order, and timing guesses.
-- **Evidence:** what to capture for a proof and where it goes. State the proof standards: exercise the real user path (the screen, the command, the pin, the protocol, or the testbench's public interface), not an internal setter, a test-only endpoint, or a force that skips the design. Each artifact is the command that was run together with the output that command produced (transcript, body, exit code, snapshot, capture). A written claim about the result is not an artifact. Capture the stimulus and the resulting state, not just the final screen or a waveform with no cause. Verify side effects (files written, rows inserted, messages sent, a pin changed, a packet sent, a peripheral register moved) alongside what's visible. Mocks only where a production boundary already isolates the external system. When the safe path is a dry-run, test mode, or simulation, verify what it actually skips by observing (files, network, git refs, which pins the sim toggles) rather than trusting its name. When a drive shows the system doing the wrong thing and the repo has an automated suite, add one test that fails on that captured output and run it to confirm the failure before any product change. A test that already passes does not count. The product fix is a separate change that makes the test pass. A repo with no suite keeps the failing command and its captured output, in the named evidence location, as the regression check.
+- **Evidence:** what to capture for a proof and where it goes. Copy these standards into the generated skill:
+  - [ ] Exercise the real user path: the screen, the command, the pin, the protocol, or the testbench's public interface. An internal setter, a test-only endpoint, or a force that skips the design is not the path.
+  - [ ] Each artifact is the command that was run together with the output that command produced (transcript, body, exit code, snapshot, or capture).
+  - [ ] A written claim about the result is not an artifact.
+  - [ ] Capture the stimulus and the resulting state. A final screen, or a waveform with no cause, is not enough.
+  - [ ] Verify side effects alongside what is visible: files written, rows inserted, messages sent, a pin changed, a packet sent, a peripheral register moved.
+  - [ ] Use a mock only where a production boundary already isolates the external system.
+  - [ ] When the safe path is a dry-run, a test mode, or a simulation, verify what it actually skips by observing files, network, git refs, and which pins the sim toggles. The name of the mode is not the check.
+  - [ ] When a drive shows the system doing the wrong thing and the repo has an automated suite, add one test that fails on that captured output and run it to confirm the failure before any product change.
+  - [ ] A test that already passes does not count.
+  - [ ] The product fix is a separate change that makes the test pass.
+  - [ ] A repo with no suite keeps the failing command and its captured output, in the named evidence location, as the regression check.
 - **Cleanup:** how to tear down instances the run created. Never kill by process name; kill or release what you started, including a probe or serial port this run claimed. Cleanup removes instances and scratch state, never the evidence: proof artifacts survive the teardown, in a location the skill names. Do not power off a shared bench unless the skill says that is safe.
 - **Helpers:** any script the skill ships is executable and its invocation is shown in the skill body. A helper the reader has to reverse-engineer is not a helper.
 
 ## 3. Seed the feature map
 
 Create `.cursor/skills/verify-<target>/features/README.md` plus one file per user-facing feature you can identify (aim for the top 3-5 to start, from routes, commands, menus, pins, boot modes, protocols, or docs). Follow the shape in [`references/feature-map-example/`](references/feature-map-example/). That example is a software app. A firmware, FPGA, simulator, or bench map uses the same four headings, with the harness commands this repo actually runs. Each file answers, from the user's point of view: what the feature is, how to reach it, how to drive it with the harness, and what observable end state proves it works. The four H2s are `Sub-features`, `How to get to it (user POV)`, `Driving it with <harness>`, and `Gotchas`. The map is the repo's maintained verification source; a proof that drives one convenient entry point is incomplete when the map lists others.
+
+Run the shape check from this skill's directory after the skill and the map are written. It checks frontmatter and the four headings. It does not drive the system.
+
+```bash
+python3 scripts/check-feature-map.py --help
+python3 scripts/check-feature-map.py --skill <path-to-verify-target>
+```
+
+Exit 0 means `name` and `description` are present and each feature file has the four H2s in order. Exit 1 lists each miss on stderr. Fix the files and run the check again. Exit 2 means the invocation was wrong. The script reads only, so a second run is safe. `--help` lists the exit codes and why there is no `--dry-run`. The same script ships inside `/maintain-verification-skill` so a one-skill install still has it. Use this copy.
 
 ## 4. Prove the generated skill before handing it over
 
